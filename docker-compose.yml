@@ -1,0 +1,26 @@
+version: '3.1'
+services:
+  app:
+    container_name: app-springboot-example
+    image: app-springboot-example
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dbpostgresql
+    command: ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/exercise.jar"]
+  dbpostgresql:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=mateo123
+      - POSTGRES_USER=mateo
+      - POSTGRES_DB=example_db
+  redis:
+    image: redis:alpine
+    command: redis-server --requirepass redisPassword
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=master
