@@ -3,9 +3,9 @@ package com.mateo.exercise.services;
 import com.mateo.exercise.data.models.HotelModel;
 import com.mateo.exercise.data.repositories.HotelRepository;
 import com.mateo.exercise.services.interfaces.HotelServiceInterface;
+import com.mateo.exercise.util.exceptions.service.HotelNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -51,9 +51,11 @@ public class HotelService implements HotelServiceInterface {
 
     @Override
     @CacheEvict(value = "hotels", allEntries = true)
-    public HotelModel modifyHotel(HotelModel model) {
+    public HotelModel modifyHotel(HotelModel model) throws HotelNotFoundException {
         //get the model in database
         Optional<HotelModel> dbModelOptional = hotelRepository.findById(model.getId());
+
+        if(!dbModelOptional.isPresent()) throw new HotelNotFoundException();
 
         AtomicReference<HotelModel> updated = new AtomicReference<>();
 

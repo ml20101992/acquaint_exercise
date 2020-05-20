@@ -12,7 +12,7 @@ public interface HotelServiceInterface {
     Optional<HotelModel> getHotel(long id);
     Page<HotelModel> getHotels(int pageNum);
     HotelModel createHotel(HotelModel model);
-    HotelModel modifyHotel(HotelModel model);
+    HotelModel modifyHotel(HotelModel model) throws HotelNotFoundException;
     boolean deleteHotel(long hotelId);
 
 }

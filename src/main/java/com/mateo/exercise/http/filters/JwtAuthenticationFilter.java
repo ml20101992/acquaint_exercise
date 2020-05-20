@@ -20,7 +20,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
 
-    private TokenService tokenService;
+    private final TokenService tokenService;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager,
                                    ApplicationContext context) {            //prob je sto ovaj filter nema veze sa springom nista, tako da ne radi autowire

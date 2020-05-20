@@ -12,14 +12,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Component
 public class TokenService {
 
-//    @Autowired
-//    private Environment env;
 
     @Value("${app.auth.key}")
     private String SECRET_KEY;
@@ -62,8 +61,6 @@ public class TokenService {
                     .build()
                     .verify(token);
         } catch (Exception e) {
-            //imam vise exceptiona, mogao bi tu napraviti custom exception sa mojim statusom sto je poslo krivo
-            //pogledaj https://javadoc.io/doc/com.auth0/java-jwt/latest/com/auth0/jwt/JWTVerifier.html
             return null;
         }
 

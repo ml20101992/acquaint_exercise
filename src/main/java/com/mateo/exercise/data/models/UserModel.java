@@ -1,7 +1,5 @@
 package com.mateo.exercise.data.models;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import javax.persistence.*;
 import java.io.Serializable;
 

@@ -2,7 +2,6 @@ package com.mateo.exercise.http.models.responses;
 
 import org.springframework.http.HttpStatus;
 
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

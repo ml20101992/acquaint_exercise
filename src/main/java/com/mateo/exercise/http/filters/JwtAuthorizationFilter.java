@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private TokenService tokenService;
+    private final TokenService tokenService;
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager,
                                   ApplicationContext context) {

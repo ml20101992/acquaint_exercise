@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserSeeder {
 
-    private PasswordEncoder encoder;
-    private UserRepository userRepository;
+    private final PasswordEncoder encoder;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserSeeder(UserRepository userRepository) {

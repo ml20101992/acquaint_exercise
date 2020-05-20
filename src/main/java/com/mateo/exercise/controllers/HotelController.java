@@ -4,22 +4,17 @@ import com.mateo.exercise.data.models.HotelModel;
 import com.mateo.exercise.http.models.requests.HotelCreateRequest;
 import com.mateo.exercise.http.models.requests.HotelUpdateRequest;
 import com.mateo.exercise.http.models.responses.HotelDeleteResponse;
-import com.mateo.exercise.http.models.responses.HttpErrorResponse;
+import com.mateo.exercise.http.models.responses.HotelNotFoundResponse;
 import com.mateo.exercise.http.models.responses.MultipleHotelResponse;
 import com.mateo.exercise.http.models.responses.SingleHotelResponse;
 import com.mateo.exercise.services.interfaces.HotelServiceInterface;
+import com.mateo.exercise.util.exceptions.service.HotelNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.query.Param;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
@@ -52,8 +47,6 @@ public class HotelController {
         }
     }
 
-
-    //stavi kao query param u smislu ?page= ubaci i page size value sa nekim defaultsima
     @GetMapping(value = "/all")
     public MultipleHotelResponse getAllHotels(@RequestParam(value = "page", defaultValue = "1", required = false) @Min(1) int page) {
 
@@ -73,10 +66,15 @@ public class HotelController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<SingleHotelResponse> modifyHotel(@RequestBody @Valid HotelUpdateRequest requestBody) {
+    public ResponseEntity<Object> modifyHotel(@RequestBody @Valid HotelUpdateRequest requestBody) {
         HotelModel model = new HotelModel(requestBody.getId(), requestBody.getName(), requestBody.getAddress(), requestBody.getZip(), requestBody.getCountry());
 
-        HotelModel modified = hotelService.modifyHotel(model);
+        HotelModel modified = null;
+        try {
+            modified = hotelService.modifyHotel(model);
+        } catch (HotelNotFoundException e) {
+            return ResponseEntity.status(404).body(new HotelNotFoundResponse("Hotel id:" + requestBody.getId() + " does not exist."));
+        }
 
         return ResponseEntity.status(200).body(new SingleHotelResponse(modified, "Hotel Modified Successfully"));
     }
